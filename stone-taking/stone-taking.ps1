@@ -11,13 +11,12 @@ function stonetaking {
 
 
 
+    # 初期値
     $stone = "○●○●○●○●○●○●○●○●○●○●"
+    $trun = -1 #0:コンピュータのターン 1:人のターン -1:未定
+    $gemeflg = $True #ゲーム継続フラグ true:継続 false:終了
 
-    $trun = -1 #0:コンピュータが先手 1:人が先手 -1:未定
-    $cnt=0
-    $flg=$True
-
-
+    # 先手後手の選択
     while($trun -lt 0 -or $trun -gt 1) {
         write-host ""
         $trun = read-host "先手後手どちらにしますか(1:先手　0:後手)"
@@ -32,20 +31,20 @@ function stonetaking {
     } else {
         write-host "あなたが後手です"
     }
-
     write-host ""
-
+    
+    # コンピューターが拾う石の個数を考える処理
     function compturn {
         $resnum = 0
         #残りが奇数になるように取る
-        if($stone.Length -eq 1){
+        if($stone.Length -eq 1){ # 石の残りが1個のとき
             $resnum = 1
-        } elseif($stone.Length -eq 4){
+        } elseif($stone.Length -eq 4){# 石の残りが4個以下のとき
             $resnum = 3
         } else {
-            if($stone.Length % 2 -eq 0){ #現在が偶数
+            if($stone.Length % 2 -eq 0){ # 石の残り数が偶数のとき
                 $resnum = 1
-            } else { #現在が奇数
+            } else { # 石の残り数が奇数のとき
                 $resnum = 2            
             }
         }
@@ -53,7 +52,8 @@ function stonetaking {
         return $resnum
     }
 
-    function hantei($num){
+    # 石を拾う処理
+    function takestone($num){
         $res_stone = $stone
         for($i=0;$i -lt $num;$i++){
             $res_stone = $res_stone.Remove(0,1)
@@ -66,19 +66,19 @@ function stonetaking {
 
     write-host $stone
 
-    while($flg){
+    while($gemeflg){
         $tack_stone=""
-        if($trun -eq 0){
+        if($trun -eq 0){ #コンピュータのターン
             $takecnt = compturn
-            $stone = hantei($takecnt)
+            $stone = takestone($takecnt)
             write-host "comの番 $takecnt 個取りました"
             write-host "$stone"
             if($stone.Length -eq 0){
                 write-host "comの負けです"
-                $flg = $False
+                $gemeflg = $False
             }
             $trun = 1 - $trun
-        } else {
+        } else { # 人のターン
             $takecnt = -1
             while($takecnt -le 0 -or $takecnt -gt 3){
                 write-host "あなたの番です"
@@ -90,11 +90,11 @@ function stonetaking {
                 }
             }
             write-host " $takecnt 個取りました"
-            $stone = hantei($takecnt)
+            $stone = takestone($takecnt)
             write-host "$stone"
             if($stone.Length -eq 0){
                 write-host "あなたの負けです"
-                $flg = $False
+                $gemeflg = $False
             }
             $trun = 1 - $trun
         }
