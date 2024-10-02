@@ -56,10 +56,10 @@ function stonetaking {
     function takestone($num){
         $res_stone = $stone
         for($i=0;$i -lt $num;$i++){
-            $res_stone = $res_stone.Remove(0,1)
             if($res_stone.Length -eq 0){
                 return $res_stone
             }
+            $res_stone = $res_stone.Substring(0, $res_stone.Length - 1)
         }
         return $res_stone
     }
