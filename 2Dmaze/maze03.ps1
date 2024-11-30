@@ -250,7 +250,7 @@ while( $floor -le 10) {
 	$maze[$my_y] = $maze[$my_y].Insert($my_x,$my_char[$my_direction])
 	# ゴールの上書き
 	$maze[$goal_y] = $maze[$goal_y].Remove($goal_x,1)
-	$maze[$goal_y] = $maze[$goal_y].Insert($goal_x,”G")
+	$maze[$goal_y] = $maze[$goal_y].Insert($goal_x,"G")
 
 	$goalflg = $False
 	$loopflg = $True
